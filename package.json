@@ -8,13 +8,30 @@
     "typescript": "^4.8.4"
   },
   "name": "j-firestore",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
+  "typings": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pub": "npm publish --access public",
+    "build": "npx tsc"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "firebase",
+    "firestore",
+    "full text search",
+    "full-text search",
+    "j-firestore"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdgamble555/j-firestore"
+  },
+  "author": "Jonathan Gamble",
+  "bugs": {
+    "url": "https://github.com/jdgamble555/j-firestore/issues"
+  },
+  "homepage": "https://github.com/jdgamble555/j-firestore",
   "license": "ISC",
   "description": "",
   "dependencies": {
