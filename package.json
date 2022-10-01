@@ -9,9 +9,9 @@
     "typescript": "^4.8.4"
   },
   "name": "j-firestore",
-  "version": "1.0.2",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "version": "1.0.3",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pub": "npm publish --access public",
