@@ -30,10 +30,10 @@ export declare function searchIndex<T>({ ref, data, fields, del, useSoundex, doc
     ref: DocumentReference<T>;
     data: any;
     fields: string[];
-    del: boolean;
-    useSoundex: boolean;
-    docObj: Document;
-    soundex_func: (s: string) => string;
+    del?: boolean;
+    useSoundex?: boolean;
+    docObj?: Document;
+    soundex_func?: (s: string) => string;
 }): Promise<void>;
 export declare function createIndex(doc: Document, html: string, n: number): string[];
 export declare function soundex(s: string): string;
