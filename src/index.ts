@@ -13,7 +13,12 @@ import {
     writeBatch,
     DocumentSnapshot,
     onSnapshot,
-    PartialWithFieldValue
+    PartialWithFieldValue,
+    collection,
+    CollectionReference,
+    getDocs,
+    orderBy,
+    query
 } from "firebase/firestore";
 import {
     combineLatest,
@@ -196,6 +201,10 @@ export function expandRefs<T>(obs: Observable<T[]>, fields: any[] = []): Observa
  *  docObj - the document object in case of ssr,
  *  soundexFunc - change out soundex function for other languages,
  *  copyFields - field values to copy from original document
+ *  searchCol - the collection to store search index
+ *  allCol - the search sub collection to store index docs
+ *  termField - the document field to store index
+ *  numWords - the number of words to index in a phrase
  * }
  * @returns 
  */
@@ -298,6 +307,58 @@ export async function searchIndex<T>({
             _data[termField] = m;
             return await setDoc<T>(searchRef as any, _data);
         }
+    } catch (e: any) {
+        throw e;
+    }
+}
+
+/**
+ * @param collectionRef - the collection reference
+ * @param term - the phrase you're searching
+ * @param param: {
+ *   searchCol - the search collection indexed
+ *   allCol - the sub search collection indexed
+ *   idField - the name of the id field to return
+ *   termField - the term field that is indexed
+ *   soundexFunc - the soundex function to use
+ *   filters = other query constraints to add (where, startAt, etc)
+ * }
+ * @returns search document references
+ */
+export async function searchCollection<T>(
+    collectionRef: CollectionReference<T>,
+    term: string,
+    {
+        searchCol = '_search',
+        allCol = '_all',
+        idField = 'id',
+        termField = '_term',
+        soundexFunc = soundex,
+        filters = []
+    }) {
+    
+    // split term from soundex
+    term = term.split(' ')
+        .map(v => soundexFunc(v)
+        ).join(' ');
+    try {
+
+        // get 
+        return await getDocs<T>(
+            query<T>(
+                collection(
+                    collectionRef.firestore,
+                    `${searchCol}/${collectionRef.path}/${allCol}`
+                ) as any,
+                orderBy(termField + term),
+                ...filters
+            )
+        ).then((arr: any) => {
+            if (!arr.empty) {
+                return arr.map((snap: any) => snapToData(snap, { idField }) as T);
+            }
+            return null;
+        });
     } catch (e: any) {
         throw e;
     }
