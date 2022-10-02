@@ -18,7 +18,8 @@ import {
     CollectionReference,
     getDocs,
     orderBy,
-    query
+    query,
+    QuerySnapshot
 } from "firebase/firestore";
 import {
     combineLatest,
@@ -335,7 +336,7 @@ export async function searchDocs<T>(
         termField = '_term',
         soundexFunc = soundex,
         filters = []
-    } = {}) {
+    } = {}): Promise<QuerySnapshot<T>> {
 
     // split term from soundex
     term = term.split(' ')
@@ -350,12 +351,12 @@ export async function searchDocs<T>(
                     collectionRef.firestore,
                     `${searchCol}/${collectionRef.path}/${allCol}`
                 ) as any,
-                orderBy(termField + term),
+                orderBy(termField + '.' + term),
                 ...filters
             )
         ).then((arr: any) => {
             if (!arr.empty) {
-                return arr.map((snap: any) => snapToData(snap, { idField }) as T);
+                return arr.docs.map((snap: any) => snapToData(snap, { idField }) as T);
             }
             return null;
         });

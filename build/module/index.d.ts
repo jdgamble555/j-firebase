@@ -1,4 +1,4 @@
-import { DocumentData, DocumentReference, SetOptions, DocumentSnapshot, PartialWithFieldValue, CollectionReference } from "firebase/firestore";
+import { DocumentData, DocumentReference, SetOptions, DocumentSnapshot, PartialWithFieldValue, CollectionReference, QuerySnapshot } from "firebase/firestore";
 import { Observable } from "rxjs";
 export declare function docExists<T>(ref: DocumentReference<T>): Promise<boolean>;
 export declare function setWithCounter<T>(ref: DocumentReference<T>, data: PartialWithFieldValue<T>, setOptions?: SetOptions, opts?: {
@@ -65,7 +65,7 @@ export declare function searchDocs<T>(collectionRef: CollectionReference<T>, ter
     termField?: string | undefined;
     soundexFunc?: typeof soundex | undefined;
     filters?: never[] | undefined;
-}): Promise<any>;
+}): Promise<QuerySnapshot<T>>;
 export declare function createIndex(doc: Document, html: string, n: number): string[];
 export declare function soundex(s: string): string;
 export declare function snapToData<T = DocumentData>(snapshot: DocumentSnapshot<T>, options?: {
