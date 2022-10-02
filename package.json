@@ -9,7 +9,7 @@
     "typescript": "^4.8.4"
   },
   "name": "j-firestore",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",

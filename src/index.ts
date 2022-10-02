@@ -336,7 +336,7 @@ export async function searchDocs<T>(
         termField = '_term',
         soundexFunc = soundex,
         filters = []
-    } = {}): Promise<QuerySnapshot<T>> {
+    } = {}): Promise<T[] | null> {
 
     // split term from soundex
     term = term.split(' ')
