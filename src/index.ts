@@ -325,7 +325,7 @@ export async function searchIndex<T>({
  * }
  * @returns search document references
  */
-export async function searchCollection<T>(
+export async function searchDocs<T>(
     collectionRef: CollectionReference<T>,
     term: string,
     {
@@ -335,8 +335,8 @@ export async function searchCollection<T>(
         termField = '_term',
         soundexFunc = soundex,
         filters = []
-    }) {
-    
+    } = {}) {
+
     // split term from soundex
     term = term.split(' ')
         .map(v => soundexFunc(v)

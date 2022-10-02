@@ -58,7 +58,7 @@ export declare function searchIndex<T>({ ref, data, indexFields, del, useSoundex
  * }
  * @returns search document references
  */
-export declare function searchCollection<T>(collectionRef: CollectionReference<T>, term: string, { searchCol, allCol, idField, termField, soundexFunc, filters }: {
+export declare function searchDocs<T>(collectionRef: CollectionReference<T>, term: string, { searchCol, allCol, idField, termField, soundexFunc, filters }?: {
     searchCol?: string | undefined;
     allCol?: string | undefined;
     idField?: string | undefined;
