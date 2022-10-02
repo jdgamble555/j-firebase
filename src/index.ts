@@ -202,7 +202,7 @@ export function expandRefs<T>(obs: Observable<T[]>, fields: any[] = []): Observa
 export async function searchIndex<T>({
     ref,
     data,
-    fields,
+    indexFields,
     del = false,
     useSoundex = true,
     docObj = document,
@@ -215,7 +215,7 @@ export async function searchIndex<T>({
 }: {
     ref: DocumentReference<T>,
     data: any,
-    fields: string[],
+    indexFields: string[],
     del?: boolean,
     useSoundex?: boolean,
     docObj?: Document,
@@ -243,7 +243,7 @@ export async function searchIndex<T>({
             const m: any = {};
 
             // go through each field to index
-            for (const field of fields) {
+            for (const field of indexFields) {
 
                 // new indexes
                 let fieldValue = data[field];
@@ -290,8 +290,8 @@ export async function searchIndex<T>({
             }
             if (copyFields.length) {
                 const d: any = {};
-                for (const k in copyFields) {
-                    d[k] = copyFields[k];
+                for (const k of copyFields) {
+                    d[k] = data[k];
                 }
                 _data = { ...d, ..._data };
             }

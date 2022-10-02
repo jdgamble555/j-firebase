@@ -27,10 +27,10 @@ export declare function expandRefs<T>(obs: Observable<T[]>, fields?: any[]): Obs
  * }
  * @returns
  */
-export declare function searchIndex<T>({ ref, data, fields, del, useSoundex, docObj, soundexFunc, copyFields, allCol, searchCol, termField, numWords }: {
+export declare function searchIndex<T>({ ref, data, indexFields, del, useSoundex, docObj, soundexFunc, copyFields, allCol, searchCol, termField, numWords }: {
     ref: DocumentReference<T>;
     data: any;
-    fields: string[];
+    indexFields: string[];
     del?: boolean;
     useSoundex?: boolean;
     docObj?: Document;
