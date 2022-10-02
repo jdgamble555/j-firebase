@@ -210,10 +210,10 @@ export async function searchIndex<T>({
     ref: DocumentReference<T>,
     data: any,
     fields: string[],
-    del: boolean,
-    useSoundex: boolean,
-    docObj: Document
-    soundex_func: (s: string) => string
+    del?: boolean,
+    useSoundex?: boolean,
+    docObj?: Document
+    soundex_func?: (s: string) => string
 }) {
 
     const allCol = '_all';
