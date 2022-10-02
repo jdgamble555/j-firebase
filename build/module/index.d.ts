@@ -14,12 +14,26 @@ export declare function deleteWithCounter<T>(ref: DocumentReference<T>, opts?: {
 }): Promise<void>;
 export declare function expandRef<T>(obs: Observable<T>, fields?: any[]): Observable<T>;
 export declare function expandRefs<T>(obs: Observable<T[]>, fields?: any[]): Observable<T[]>;
-export declare function searchIndex(docObj: Document, opts: {
-    ref: DocumentReference<DocumentData>;
-    after: any;
+/**
+ *
+ * @param param: {
+ *  ref - document ref
+ *  data - document data
+ *  del - boolean - delete past index
+ *  useSoundex - index with soundex
+ *  docObj - the document object in case of ssr,
+ *  soundex_func - change out soundex function for other languages
+ * }
+ * @returns
+ */
+export declare function searchIndex<T>({ ref, data, fields, del, useSoundex, docObj, soundex_func }: {
+    ref: DocumentReference<T>;
+    data: any;
     fields: string[];
-    del?: boolean;
-    useSoundex?: boolean;
+    del: boolean;
+    useSoundex: boolean;
+    docObj: Document;
+    soundex_func: (s: string) => string;
 }): Promise<void>;
 export declare function createIndex(doc: Document, html: string, n: number): string[];
 export declare function soundex(s: string): string;

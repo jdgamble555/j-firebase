@@ -186,42 +186,61 @@ export function expandRefs<T>(obs: Observable<T[]>, fields: any[] = []): Observa
     );
 }
 
-export async function searchIndex(docObj: Document, opts: {
-    ref: DocumentReference<DocumentData>,
-    after: any,
+/**
+ * 
+ * @param param: {
+ *  ref - document ref
+ *  data - document data
+ *  del - boolean - delete past index
+ *  useSoundex - index with soundex
+ *  docObj - the document object in case of ssr,
+ *  soundex_func - change out soundex function for other languages
+ * }
+ * @returns 
+ */
+export async function searchIndex<T>({
+    ref,
+    data,
+    fields,
+    del = false,
+    useSoundex = true,
+    docObj = document,
+    soundex_func = soundex
+}: {
+    ref: DocumentReference<T>,
+    data: any,
     fields: string[],
-    del?: boolean,
-    useSoundex?: boolean
+    del: boolean,
+    useSoundex: boolean,
+    docObj: Document
+    soundex_func: (s: string) => string
 }) {
-
-    opts.del = opts.del || false;
-    opts.useSoundex = opts.useSoundex || true;
 
     const allCol = '_all';
     const searchCol = '_search';
     const termField = '_term';
     const numWords = 6;
 
-    const colId = opts.ref.path.split('/').slice(0, -1).join('/');
+    const colId = ref.path.split('/').slice(0, -1).join('/');
 
     // get collection
     const searchRef = doc(
-        opts.ref.firestore,
-        `${searchCol}/${colId}/${allCol}/${opts.ref.id}`
+        ref.firestore,
+        `${searchCol}/${colId}/${allCol}/${ref.id}`
     );
     try {
-        if (opts.del) {
+        if (del) {
             await deleteDoc(searchRef);
         } else {
 
-            let data: any = {};
+            const _data: any = {};
             const m: any = {};
 
             // go through each field to index
-            for (const field of opts.fields) {
+            for (const field of fields) {
 
                 // new indexes
-                let fieldValue = opts.after[field];
+                let fieldValue = data[field];
 
                 // if array, turn into string
                 if (Array.isArray(fieldValue)) {
@@ -230,11 +249,11 @@ export async function searchIndex(docObj: Document, opts: {
                 let index = createIndex(docObj, fieldValue, numWords);
 
                 // if filter function, run function on each word
-                if (opts.useSoundex) {
+                if (useSoundex) {
                     const temp = [];
                     for (const i of index) {
                         temp.push(i.split(' ').map(
-                            (v: string) => soundex(v)
+                            (v: string) => soundex_func(v)
                         ).join(' '));
                     }
                     index = temp;
@@ -263,14 +282,8 @@ export async function searchIndex(docObj: Document, opts: {
                     }
                 }
             }
-            data[termField] = m;
-
-            data = {
-                ...data,
-                slug: opts.after.slug,
-                title: opts.after.title
-            };
-            return await setDoc(searchRef, data);
+            _data[termField] = m;
+            return await setDoc<T>(searchRef as any, _data);
         }
     } catch (e: any) {
         throw e;
@@ -301,6 +314,10 @@ export function createIndex(doc: Document, html: string, n: number): string[] {
     }
     // strip text from html
     const extractContent = (html: string) => {
+        if (typeof window === undefined) {
+            // can't run on server currently
+            return html;
+        }
         const tmp = doc.createElement('div');
         tmp.innerHTML = html;
         return tmp.textContent || tmp.innerText || '';
@@ -313,7 +330,7 @@ export function createIndex(doc: Document, html: string, n: number): string[] {
     );
 }
 
-export function soundex(s: string) {
+export function soundex(s: string): string {
     const a = s.toLowerCase().split("");
     const f = a.shift() as string;
     let r = "";
