@@ -194,7 +194,8 @@ export function expandRefs<T>(obs: Observable<T[]>, fields: any[] = []): Observa
  *  del - boolean - delete past index
  *  useSoundex - index with soundex
  *  docObj - the document object in case of ssr,
- *  soundex_func - change out soundex function for other languages
+ *  soundexFunc - change out soundex function for other languages,
+ *  copyFields - field values to copy from original document
  * }
  * @returns 
  */
@@ -205,15 +206,17 @@ export async function searchIndex<T>({
     del = false,
     useSoundex = true,
     docObj = document,
-    soundex_func = soundex
+    soundexFunc = soundex,
+    copyFields = []
 }: {
     ref: DocumentReference<T>,
     data: any,
     fields: string[],
     del?: boolean,
     useSoundex?: boolean,
-    docObj?: Document
-    soundex_func?: (s: string) => string
+    docObj?: Document,
+    copyFields?: string[],
+    soundexFunc?: (s: string) => string
 }) {
 
     const allCol = '_all';
@@ -233,7 +236,7 @@ export async function searchIndex<T>({
             await deleteDoc(searchRef);
         } else {
 
-            const _data: any = {};
+            let _data: any = {};
             const m: any = {};
 
             // go through each field to index
@@ -253,7 +256,7 @@ export async function searchIndex<T>({
                     const temp = [];
                     for (const i of index) {
                         temp.push(i.split(' ').map(
-                            (v: string) => soundex_func(v)
+                            (v: string) => soundexFunc(v)
                         ).join(' '));
                     }
                     index = temp;
@@ -281,6 +284,13 @@ export async function searchIndex<T>({
                         }
                     }
                 }
+            }
+            if (copyFields.length) {
+                const d: any = {};
+                for (const [key, value] of Object.entries(copyFields)) {
+                    d[key] = value;
+                }
+                _data = { ...d, ..._data };
             }
             _data[termField] = m;
             return await setDoc<T>(searchRef as any, _data);

@@ -22,18 +22,20 @@ export declare function expandRefs<T>(obs: Observable<T[]>, fields?: any[]): Obs
  *  del - boolean - delete past index
  *  useSoundex - index with soundex
  *  docObj - the document object in case of ssr,
- *  soundex_func - change out soundex function for other languages
+ *  soundexFunc - change out soundex function for other languages,
+ *  copyFields - field values to copy from original document
  * }
  * @returns
  */
-export declare function searchIndex<T>({ ref, data, fields, del, useSoundex, docObj, soundex_func }: {
+export declare function searchIndex<T>({ ref, data, fields, del, useSoundex, docObj, soundexFunc, copyFields }: {
     ref: DocumentReference<T>;
     data: any;
     fields: string[];
     del?: boolean;
     useSoundex?: boolean;
     docObj?: Document;
-    soundex_func?: (s: string) => string;
+    copyFields?: string[];
+    soundexFunc?: (s: string) => string;
 }): Promise<void>;
 export declare function createIndex(doc: Document, html: string, n: number): string[];
 export declare function soundex(s: string): string;
