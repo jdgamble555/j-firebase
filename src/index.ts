@@ -207,7 +207,11 @@ export async function searchIndex<T>({
     useSoundex = true,
     docObj = document,
     soundexFunc = soundex,
-    copyFields = []
+    copyFields = [],
+    allCol = '_all',
+    searchCol = '_search',
+    termField = '_term',
+    numWords = 6
 }: {
     ref: DocumentReference<T>,
     data: any,
@@ -216,13 +220,12 @@ export async function searchIndex<T>({
     useSoundex?: boolean,
     docObj?: Document,
     copyFields?: string[],
-    soundexFunc?: (s: string) => string
+    soundexFunc?: (s: string) => string,
+    allCol?: string,
+    searchCol?: string,
+    termField?: string,
+    numWords?: number
 }) {
-
-    const allCol = '_all';
-    const searchCol = '_search';
-    const termField = '_term';
-    const numWords = 6;
 
     const colId = ref.path.split('/').slice(0, -1).join('/');
 
@@ -287,8 +290,8 @@ export async function searchIndex<T>({
             }
             if (copyFields.length) {
                 const d: any = {};
-                for (const [key, value] of Object.entries(copyFields)) {
-                    d[key] = value;
+                for (const k in copyFields) {
+                    d[k] = copyFields[k];
                 }
                 _data = { ...d, ..._data };
             }

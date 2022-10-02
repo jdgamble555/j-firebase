@@ -27,7 +27,7 @@ export declare function expandRefs<T>(obs: Observable<T[]>, fields?: any[]): Obs
  * }
  * @returns
  */
-export declare function searchIndex<T>({ ref, data, fields, del, useSoundex, docObj, soundexFunc, copyFields }: {
+export declare function searchIndex<T>({ ref, data, fields, del, useSoundex, docObj, soundexFunc, copyFields, allCol, searchCol, termField, numWords }: {
     ref: DocumentReference<T>;
     data: any;
     fields: string[];
@@ -36,6 +36,10 @@ export declare function searchIndex<T>({ ref, data, fields, del, useSoundex, doc
     docObj?: Document;
     copyFields?: string[];
     soundexFunc?: (s: string) => string;
+    allCol?: string;
+    searchCol?: string;
+    termField?: string;
+    numWords?: number;
 }): Promise<void>;
 export declare function createIndex(doc: Document, html: string, n: number): string[];
 export declare function soundex(s: string): string;
