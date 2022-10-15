@@ -8,8 +8,8 @@
     "prettier": "^2.7.1",
     "typescript": "^4.8.4"
   },
-  "name": "j-firestore",
-  "version": "1.0.14",
+  "name": "j-firebase",
+  "version": "1.0.0",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
@@ -25,17 +25,17 @@
     "firestore",
     "full text search",
     "full-text search",
-    "j-firestore"
+    "j-firebase"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jdgamble555/j-firestore"
+    "url": "git+https://github.com/jdgamble555/j-firebase"
   },
   "author": "Jonathan Gamble",
   "bugs": {
-    "url": "https://github.com/jdgamble555/j-firestore/issues"
+    "url": "https://github.com/jdgamble555/j-firebase/issues"
   },
-  "homepage": "https://github.com/jdgamble555/j-firestore",
+  "homepage": "https://github.com/jdgamble555/j-firebase",
   "license": "ISC",
   "description": "",
   "dependencies": {

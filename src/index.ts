@@ -18,8 +18,7 @@ import {
     CollectionReference,
     getDocs,
     orderBy,
-    query,
-    QuerySnapshot
+    query
 } from "firebase/firestore";
 import {
     combineLatest,
